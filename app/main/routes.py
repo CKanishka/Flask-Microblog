@@ -6,11 +6,11 @@ from flask_babel import _, get_locale
 from guess_language import guess_language
 from app import db
 from app.main.forms import EditProfileForm, PostForm, SearchForm, MessageForm
-from app.models import User, Post, Message, Notification
+from app.models import User, Post, Message, Notification, Task
 from app.translate import translate
 from app.main import bp
-
-
+from celery import uuid
+from app import tasks
 @bp.before_app_request
 def before_request():
     if current_user.is_authenticated:
@@ -198,7 +198,11 @@ def export_posts():
     if current_user.get_task_in_progress('export_posts'):
         flash(_('An export task is currently in progress'))
     else:
-        current_user.launch_task('export_posts', _('Exporting posts...'))
+        #current_user.launch_task('export_posts', _('Exporting posts...'))
+        task_id = uuid()
+        job = tasks.export_posts_c.apply_async(args=[current_user.id,task_id],task_id=task_id)
+        task = Task(id=str(task_id), name='export_posts', description='Exporting posts.....',user=current_user)
+        db.session.add(task)
         db.session.commit()
     return redirect(url_for('main.user', username=current_user.username))
 
