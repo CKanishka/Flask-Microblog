@@ -155,11 +155,9 @@ class User(UserMixin, db.Model):
     #     return task
 
     def get_tasks_in_progress(self):
-        print('get_tasks_in_progress')
         return Task.query.filter_by(user=self, complete=False).all()
 
     def get_task_in_progress(self, name):
-        print('get_task_in_progress')
         return Task.query.filter_by(name=name, user=self,
                                     complete=False).first()
 
@@ -210,9 +208,9 @@ class Task(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     complete = db.Column(db.Boolean, default=False)
     
-    def get_rq_job(self):
-        rq_job = AsyncResult(self.id)
-        return rq_job
+    # def get_rq_job(self):
+    #     rq_job = AsyncResult(self.id)
+    #     return rq_job
 
     def get_progress(self):
         job = AsyncResult(self.id)
