@@ -1,6 +1,6 @@
 alembic==0.9.6
 amqp==2.5.2
-Babel==2.5.1
+Babel==2.9.1
 billiard==3.6.1.0
 blinker==1.4
 celery==4.3.0
