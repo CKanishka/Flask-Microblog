@@ -27,7 +27,7 @@ importlib-metadata==0.23
 itsdangerous==0.24
 Jinja2==2.10
 kombu==4.6.6
-Mako==1.0.7
+Mako==1.2.2
 MarkupSafe==1.0
 monotonic==1.5
 more-itertools==7.2.0
